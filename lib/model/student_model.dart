@@ -7,9 +7,9 @@ class StudentModel {
 
   factory StudentModel.fromJson(Map<String, dynamic> json) {
     return StudentModel(
-      name: json['Name'] as String?,
-      rollno: json['RollNo'] as String?,
-      classs: json['Class'] as String?,
+      name: json['name'] as String?,
+      rollno: json['rollno'] as String?,
+      classs: json['class'] as String?,
     );
   }
 

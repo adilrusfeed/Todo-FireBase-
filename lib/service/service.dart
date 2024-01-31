@@ -4,7 +4,7 @@ import 'package:todofirebase/model/student_model.dart';
 
 class FirebaseService {
   String collectionref = 'Student';
-  //instnce data aces cheyn
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   FirebaseStorage storage = FirebaseStorage.instance;

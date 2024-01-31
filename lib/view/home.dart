@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todofirebase/controller/cont.dart';
+import 'package:todofirebase/controller/homeprovider.dart';
 import 'package:todofirebase/model/student_model.dart';
 import 'package:todofirebase/view/addpage.dart';
 import 'package:todofirebase/view/det.dart';
@@ -16,7 +16,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Student"),
+        title: Text(
+          "Student Details",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: Column(children: [
         Expanded(
@@ -40,10 +44,10 @@ class HomeScreen extends StatelessWidget {
                           itemCount: studentsDoc.length,
                           itemBuilder: (context, index) {
                             final data = studentsDoc[index].data();
-                            // final id = studentsDoc[index].id;
+                            final id = studentsDoc[index].id;
                             return Card(
                               elevation:
-                                  3, // Add elevation for a card-like look
+                                  5, // Add elevation for a card-like look
                               margin: const EdgeInsets.all(8),
                               child: ListTile(
                                 title: Text(
@@ -57,13 +61,13 @@ class HomeScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Age: ${data.rollno.toString()}",
+                                      "Age: ${data.rollno ?? 'N/A'}",
                                       style: const TextStyle(
                                         color: Colors.grey,
                                       ),
                                     ),
                                     Text(
-                                      "Class: ${data.classs.toString()}",
+                                      "Class: ${data.classs ?? 'N/A'}",
                                       style: const TextStyle(
                                         color: Colors.grey,
                                       ),
@@ -72,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.deepPurple,
-                                  //  backgroundImage: NetworkImage(data.image!),
+                                  // backgroundImage: NetworkImage(data.image!),
                                 ),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -86,7 +90,10 @@ class HomeScreen extends StatelessWidget {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => EditPage(),
+                                            builder: (context) => EditPage(
+                                              id: id,
+                                              student: data,
+                                            ),
                                           ),
                                         );
                                       },
@@ -96,7 +103,9 @@ class HomeScreen extends StatelessWidget {
                                         Icons.delete,
                                         color: Colors.red,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        value.deleteStudent(id);
+                                      },
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios,
@@ -108,7 +117,8 @@ class HomeScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Detail(),
+                                      builder: (context) =>
+                                          DetailScreen(student: data),
                                     ),
                                   );
                                 },
@@ -135,8 +145,7 @@ class HomeScreen extends StatelessWidget {
           );
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color.fromARGB(255, 0, 0, 0)),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
         ),
         child: const Text(
           'Add',

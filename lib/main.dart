@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todofirebase/controller/cont.dart';
+import 'package:todofirebase/controller/homeprovider.dart';
 import 'package:todofirebase/view/firebase_options.dart';
 import 'package:todofirebase/view/home.dart';
 
@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

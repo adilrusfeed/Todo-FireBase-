@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todofirebase/controller/cont.dart';
+import 'package:todofirebase/controller/homeprovider.dart';
 import 'package:todofirebase/model/student_model.dart';
 import 'package:todofirebase/view/home.dart';
 
@@ -19,7 +19,10 @@ class AddPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Details"),
+        title: const Text(
+          "Add Details",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,6 +90,7 @@ class AddPage extends StatelessWidget {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 if (_validateFields(
