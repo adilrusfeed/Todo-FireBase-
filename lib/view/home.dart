@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.deepPurple,
-                                  // backgroundImage: NetworkImage(data.image!),
+                                  backgroundImage: NetworkImage(data.image!),
                                 ),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -105,6 +105,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       onPressed: () {
                                         value.deleteStudent(id);
+                                        value.deleteImage(data.image);
                                       },
                                     ),
                                     const Icon(

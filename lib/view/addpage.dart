@@ -1,21 +1,31 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:todofirebase/controller/homeprovider.dart';
+import 'package:todofirebase/controller/imageprovider.dart';
 import 'package:todofirebase/model/student_model.dart';
 import 'package:todofirebase/view/home.dart';
 
-class AddPage extends StatelessWidget {
-  const AddPage({Key? key}) : super(key: key);
+class AddPage extends StatefulWidget {
+  AddPage({Key? key}) : super(key: key);
+  TextEditingController nameController = TextEditingController();
+  TextEditingController rollController = TextEditingController();
+  TextEditingController classController = TextEditingController();
 
   @override
+  State<AddPage> createState() => _AddPageState();
+}
+
+class _AddPageState extends State<AddPage> {
+  @override
   Widget build(BuildContext context) {
+    final imagepro = Provider.of<ImagesProvider>(context);
     // final pro = Provider.of<StudentProvider>(context);
-    TextEditingController nameController = TextEditingController();
-    TextEditingController rollController = TextEditingController();
-    TextEditingController classController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +42,9 @@ class AddPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    imagepro.setImage(ImageSource.camera);
+                  },
                   icon: Icon(Icons.camera_alt),
                   label: Text('Camera'),
                   style: ElevatedButton.styleFrom(
@@ -46,6 +58,7 @@ class AddPage extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () {
                     // Implement gallery functionality here
+                    imagepro.setImage(ImageSource.gallery);
                   },
                   icon: Icon(Icons.photo_library),
                   label: Text('Gallery'),
@@ -61,7 +74,7 @@ class AddPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextFormField(
-              controller: nameController,
+              controller: widget.nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
                 border:
@@ -70,7 +83,7 @@ class AddPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextFormField(
-              controller: rollController,
+              controller: widget.rollController,
               decoration: InputDecoration(
                 labelText: 'Roll No',
                 border:
@@ -83,20 +96,31 @@ class AddPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextFormField(
-              controller: classController,
+              controller: widget.classController,
               decoration: InputDecoration(
                 labelText: 'Class',
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
+            if (imagepro.selectImage != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.file(
+                    imagepro.selectImage!,
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                if (_validateFields(
-                    nameController, rollController, classController)) {
-                  addStudent(
-                      context, nameController, rollController, classController);
+                if (_validateFields()) {
+                  addStudent(context);
                 } else {
                   _showAlert(context, 'Please fill in all fields.');
                 }
@@ -112,13 +136,10 @@ class AddPage extends StatelessWidget {
     );
   }
 
-  bool _validateFields(
-      TextEditingController nameController,
-      TextEditingController rollController,
-      TextEditingController classController) {
-    return nameController.text.isNotEmpty &&
-        classController.text.isNotEmpty &&
-        rollController.text.isNotEmpty;
+  bool _validateFields() {
+    return widget.nameController.text.isNotEmpty &&
+        widget.classController.text.isNotEmpty &&
+        widget.rollController.text.isNotEmpty;
   }
 
   void _showAlert(BuildContext context, String message) {
@@ -142,22 +163,20 @@ class AddPage extends StatelessWidget {
   }
 
   void addStudent(
-      BuildContext context,
-      TextEditingController nameController,
-      TextEditingController rollController,
-      TextEditingController classController) async {
+    BuildContext context,
+  ) async {
     final provider = Provider.of<StudentProvider>(context, listen: false);
-    final name = nameController.text;
-    final roll = rollController.text;
-    final classs = classController.text;
+    final imagepro = Provider.of<ImagesProvider>(context, listen: false);
+    final name = widget.nameController.text;
+    final roll = widget.rollController.text;
+    final classs = widget.classController.text;
 
+    await provider.imageAdder(File(imagepro.selectImage!.path));
     final student = StudentModel(
-      name: name,
-      rollno: roll,
-      classs: classs,
-    );
+        name: name, rollno: roll, classs: classs, image: provider.downloadurl);
 
     provider.addStudent(student);
+    imagepro.clearImage();
 
     Navigator.push(
       context,
