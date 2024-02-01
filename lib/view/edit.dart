@@ -9,10 +9,12 @@ import 'package:todofirebase/controller/homeprovider.dart';
 import 'package:todofirebase/controller/imageprovider.dart';
 import 'package:todofirebase/model/student_model.dart';
 
+// ignore: must_be_immutable
 class EditPage extends StatefulWidget {
   StudentModel student;
   String id;
-  EditPage({required this.student, required this.id, key}) : super(key: key);
+  EditPage({required this.student, required this.id, Key? key})
+      : super(key: key);
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -97,13 +99,22 @@ class _EditPageState extends State<EditPage> {
               ),
               if (value.selectImage != null)
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
+                  padding: EdgeInsets.symmetric(vertical: 16),
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(value.selectImage!.path)),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      value.selectImage!.path,
+                      height: 200,
+                      width: 200,
+                    ),
+                  ),
                 ),
               SizedBox(height: 15),
-              ElevatedButton(onPressed: () {}, child: Text("Save"))
+              ElevatedButton(
+                  onPressed: () {
+                    editData(context, value.selectImage!.path);
+                  },
+                  child: Text("Save"))
             ],
           ),
         ),

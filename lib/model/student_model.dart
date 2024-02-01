@@ -2,6 +2,7 @@ class StudentModel {
   String? name;
   String? rollno;
   String? classs;
+
   String? image;
 
   StudentModel({this.name, this.rollno, this.classs, required this.image});
@@ -16,6 +17,11 @@ class StudentModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {'image': image, 'name': name, 'rollno': rollno, 'class': classs};
+    return {
+      'image': image,
+      'name': name,
+      'rollno': rollno,
+      'class': classs,
+    };
   }
 }
