@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:todofirebase/model/student_model.dart';
-import 'package:todofirebase/view/edit.dart';
 
 class DetailScreen extends StatelessWidget {
   final StudentModel student;
@@ -19,24 +18,6 @@ class DetailScreen extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.edit,
-              color: Color.fromARGB(255, 255, 0, 0),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EditPage(
-                          student: student,
-                          id: '',
-                        )),
-              );
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

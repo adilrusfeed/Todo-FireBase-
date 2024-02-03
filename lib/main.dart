@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todofirebase/controller/homeprovider.dart';
 import 'package:todofirebase/controller/imageprovider.dart';
-import 'package:todofirebase/view/firebase_options.dart';
+import 'package:todofirebase/firebase_options.dart';
 import 'package:todofirebase/view/home.dart';
 
 void main() async {

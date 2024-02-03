@@ -104,8 +104,6 @@ class _EditPageState extends State<EditPage> {
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
                       value.selectImage!.path,
-                      height: 200,
-                      width: 200,
                     ),
                   ),
                 ),
